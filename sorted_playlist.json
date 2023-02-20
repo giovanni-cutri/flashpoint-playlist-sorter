@@ -1,0 +1,39 @@
+{
+    "id": "56d7696a-a080-470b-b2ce-53d9fa92f864",
+    "games": [
+        {
+            "id": 6244,
+            "playlistId": "56d7696a-a080-470b-b2ce-53d9fa92f864",
+            "order": 0,
+            "notes": "",
+            "gameId": "84be00ce-ed2f-4e89-abe8-cac4e8293157"
+        },
+        {
+            "id": 6242,
+            "playlistId": "56d7696a-a080-470b-b2ce-53d9fa92f864",
+            "order": 1,
+            "notes": "",
+            "gameId": "cd871cbb-9792-0410-bb74-754a635247a0"
+        },
+        {
+            "id": 6243,
+            "playlistId": "56d7696a-a080-470b-b2ce-53d9fa92f864",
+            "order": 2,
+            "notes": "",
+            "gameId": "b3a354d6-a4ef-4b6e-b349-11a2b969f91e"
+        },
+        {
+            "id": 6245,
+            "playlistId": "56d7696a-a080-470b-b2ce-53d9fa92f864",
+            "order": 3,
+            "notes": "",
+            "gameId": "98bcd6e3-c1e4-45bf-b862-7199eda20a26"
+        }
+    ],
+    "title": "Test",
+    "description": "",
+    "author": "",
+    "icon": "",
+    "library": "arcade",
+    "extreme": false
+}
