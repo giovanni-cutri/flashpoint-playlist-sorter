@@ -4,19 +4,20 @@ import json
 import os
 import uuid
 import sqlite3
+import re
 
 
 def main():
     args = parse_arguments()
     field = get_field_to_sort(args)
-    playlist = get_playlist()
+    playlist = get_playlist(args.input)
     games = get_games(playlist)
     db_cursor = get_db_cursor()
     new_playlist = replace_playlist_id(playlist, db_cursor)
     games_info = get_games_info(games, new_playlist["id"],  db_cursor, field)
     # close connection to database
     con.close()
-    save_playlist(new_playlist, games_info, field)
+    save_playlist(new_playlist, games_info, field, args.output)
 
 
 def parse_arguments():
@@ -24,7 +25,7 @@ def parse_arguments():
     parser.add_argument("-i", "--input", help="the input file which contains the playlist you want to sort in JSON format", nargs="?",
                         default="playlist.json", type=lambda x: is_valid_file(parser, x))
     parser.add_argument("-o", "--output", help="the output file which is where the sorted playlist will be saved to", nargs="?",
-                        default="sorted_playlist.json")
+                            default="sorted_playlist.json")
     # you can only sort by one field, so the following arguments are mutually exclusive
     group = parser.add_mutually_exclusive_group()
     group.add_argument("-da", "--date-added", help="sort by date added", action="store_true")
@@ -54,11 +55,11 @@ def get_field_to_sort(args):
         field = "developer"
     elif args.date_modified:
         field = "dateModified"
-    elif args.publisher:
+    elif args.platform:
         field = "platform"
-    elif args.series:
+    elif args.publisher:
         field = "publisher"
-    elif args.title:
+    elif args.series:
         field = "series"
     elif args.title:
         field = "title"
@@ -68,12 +69,8 @@ def get_field_to_sort(args):
     return field
 
 
-def get_playlist():
-    try:
-        f = open("playlist.json")
-    except OSError:
-        print("Error: please provide the playlist's file")
-        sys.exit()
+def get_playlist(input_file):
+    f = open(input_file)
     # load playlist into a dictionary    
     playlist = json.load(f)
     f.close()
@@ -127,23 +124,25 @@ def get_games_info(games, id, cur, field):
     return games
 
 
-def save_playlist(playlist, games, field):
-    games = clean(games, field)
+def save_playlist(playlist, games, field, output_file):
+    games = rearrange(games, field)
     # copy the sorted games list into a new, sorted playlist
     playlist["games"] = games
+    # update playlist's title
+    playlist["title"] = playlist["title"] + " - Sorted by " + clean(field)
     # save the sorted playlist in a new file
-    with open("sorted_playlist.json", "w") as f:
+    with open(output_file, "w") as f:
         json.dump(playlist, f, indent=4)
 
 
-def clean(games, field):
+def rearrange(games, field):
     sorted_games = sort(games, field)
     ordered_games = update_game_order(sorted_games)
     return ordered_games
 
 
 def sort(games, field):
-    # sort list of dictionaries by value
+    # sort list of dictionarie  s by value
     sorted_games = sorted(games, key = lambda game: (game[field].lower()))
     # remove values, as they are no longer necessary
     for game in sorted_games:
@@ -160,7 +159,15 @@ def update_game_order(games):
     return games
 
 
+def clean(field):
+    matches = re.search("([A-Z])", field)
+    if matches:
+        capital_letter = matches.groups(1)[0]
+        field = field.replace(capital_letter, " " + capital_letter)
+    field = field[0].capitalize() + field[1:]
+    print(field)
+    return field 
+
+
 if __name__ == "__main__":
     main()
-
-# TODO: sorted by [field]
