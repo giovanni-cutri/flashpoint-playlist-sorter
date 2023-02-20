@@ -1,22 +1,40 @@
+import sys
 import json
+import os
 import uuid
 import sqlite3
 
-# load playlist json in a dictionary
-f = open("playlist.json")
+# load playlist into a dictionary
+try:
+    f = open("playlist.json")
+except OSError:
+    print("Error: please provide the playlist's file")
+    sys.exit()
 playlist = json.load(f)
 f.close()
-
-# replace playlist's id
-id = str(uuid.uuid4())
-playlist["id"] = id
 
 # extract games from the playlist, obtaining a list of dictionaries, one for each game
 games = playlist["games"]
 
 # initialize connection to the database
+if not os.path.isfile("flashpoint.sqlite"):
+    print("Error: please provide the database file")
+    sys.exit()
 con = sqlite3.connect("flashpoint.sqlite")
 cur = con.cursor()
+
+# get existing playlists' id
+res = cur.execute("SELECT id FROM playlist")
+existing_ids = []
+for i in res.fetchall():
+    existing_ids.append(i[0])
+
+# create a new id for the new sorted playlist, ensuring that it is not a duplicate
+while 1:
+    id = str(uuid.uuid4())
+    if id not in existing_ids:
+        break
+playlist["id"] = id
 
 # for each game, get the corresponding title and add that information to the game's dictionary
 for game in games:
@@ -56,6 +74,5 @@ with open("sorted_playlist.json", "w") as f:
 
 
 
-# TODO: check uuid duplicate
 # TODO: sort by [field]
 # TODO: add other fields
