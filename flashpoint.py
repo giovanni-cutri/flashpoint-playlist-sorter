@@ -132,6 +132,8 @@ def save_playlist(playlist, games, field, output_file, descending):
     playlist["games"] = games
     # update playlist's title
     playlist["title"] = playlist["title"] + " - Sorted by " + clean(field)
+    if descending:
+        playlist["title"] = playlist["title"] + " (Descending)"
     # save the sorted playlist in a new file
     with open(output_file, "w") as f:
         json.dump(playlist, f, indent=4)
