@@ -6,7 +6,7 @@
 ## Setting up
 
 - Download the *flashpoint.py* file and place it in any folder.
-- In that same folder, you will need to copy two files:
+- Inside that same folder, you will need to copy two files:
     - The playlist you want to sort, in JSON format (which is the default export format for Flashpoint);
      - The *flashpoint.sqlite* file, which you can find in your local Flashpoint copy, inside the *Data* folder.
 
