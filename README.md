@@ -22,8 +22,8 @@ You can modify this behaviour by passing the following arguments:
 
 ```
 -h, --help                         show this help message and exit
--i [INPUT], --input [INPUT]       the input file which contains the playlist you want to sort in JSON format; default is playlist.json                                 
--o [OUTPUT], --output [OUTPUT]    the output file which is where the sorted playlist will be saved to; default is sorted_playlist.json 
+-i [INPUT], --input [INPUT]        the input file which contains the playlist you want to sort in JSON format; default is playlist.json                                 
+-o [OUTPUT], --output [OUTPUT]     the output file which is where the sorted playlist will be saved to; default is sorted_playlist.json 
 -da, --date-added                  sort by date added
 -dev, --developer                  sort by developer
 -dm, --date-modified               sort by date modified
