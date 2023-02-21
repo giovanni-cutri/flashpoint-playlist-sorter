@@ -16,7 +16,7 @@
 python flashpoint.py [OPTIONS]...
 ```
 
-By default, the program will assume that the playlist to sort is inside a file called *playlist.json* and will output the sorted playlist in a file called *sorted_playlist.json*.
+By default, the program will assume that the playlist to sort is inside a file called *playlist.json*, will sort it by title in ascending order and will output the sorted playlist in a file called *sorted_playlist.json*.
 
 You can modify this behaviour by passing the following arguments:
 
