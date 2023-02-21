@@ -41,7 +41,7 @@ def parse_arguments():
     return args
 
 
-def is_valid_file(parser,arg):
+def is_valid_file(parser, arg):
     if not os.path.exists(arg):
         parser.error("The file %s does not exist!" % arg)
     elif os.path.splitext(arg)[-1] != ".json":
@@ -148,9 +148,9 @@ def rearrange(games, field, descending):
 def sort(games, field, descending):
     # sort list of dictionaries by value
     if descending:
-        sorted_games = sorted(games, key = lambda game: (game[field].lower()), reverse = True)
+        sorted_games = sorted(games, key=lambda game: (game[field].lower()), reverse=True)
     else:
-        sorted_games = sorted(games, key = lambda game: (game[field].lower()))
+        sorted_games = sorted(games, key=lambda game: (game[field].lower()))
     # remove values, as they are no longer necessary
     for game in sorted_games:
         del game[field]
