@@ -36,7 +36,7 @@ def parse_arguments():
     group.add_argument("-s", "--series", help="sort by series",  action="store_true")
     group.add_argument("-t", "--title", help="sort by title", action="store_true")
     # finally, specify if you want to sort in descending order
-    parser.add_argument("-desc", "--descending", help="sort by descending order", action="store_true")
+    parser.add_argument("-desc", "--descending", help="sort in descending order", action="store_true")
     args = parser.parse_args()
     return args
 
