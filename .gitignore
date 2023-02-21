@@ -1,6 +1,10 @@
 # Flashpoint database file
 flashpoint.sqlite
 
+# Flashpoint playlists files
+playlist.json
+sorted_playlist.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
