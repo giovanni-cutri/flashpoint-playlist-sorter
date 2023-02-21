@@ -31,7 +31,7 @@ You can modify this behaviour by passing the following arguments:
 -pu, --publisher                   sort by publisher
 -s, --series                       sort by series
 -t, --title                        sort by title
--desc, --descending                sort by descending order
+-desc, --descending                sort in descending order
 ```
 
 ## License
