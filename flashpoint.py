@@ -17,15 +17,15 @@ def main():
     games_info = get_games_info(games, new_playlist["id"],  db_cursor, field)
     # close connection to database
     con.close()
-    save_playlist(new_playlist, games_info, field, args.output)
+    save_playlist(new_playlist, games_info, field, args.output, args.descending)
 
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Sort your Flashpoint playlist by the field of your choice!")
-    parser.add_argument("-i", "--input", help="the input file which contains the playlist you want to sort in JSON format", nargs="?",
+    parser.add_argument("-i", "--input", help="the input file which contains the playlist you want to sort in JSON format; default is playlist.json", nargs="?",
                         default="playlist.json", type=lambda x: is_valid_file(parser, x))
-    parser.add_argument("-o", "--output", help="the output file which is where the sorted playlist will be saved to", nargs="?",
-                            default="sorted_playlist.json")
+    parser.add_argument("-o", "--output", help="the output file which is where the sorted playlist will be saved to; default is sorted_playlist.json", nargs="?",
+                        default="sorted_playlist.json")
     # you can only sort by one field, so the following arguments are mutually exclusive
     group = parser.add_mutually_exclusive_group()
     group.add_argument("-da", "--date-added", help="sort by date added", action="store_true")
@@ -46,6 +46,8 @@ def is_valid_file(parser,arg):
         parser.error("The file %s does not exist!" % arg)
     elif os.path.splitext(arg)[-1] != ".json":
         parser.error("The file %s is not in JSON format!" % arg)
+    else:
+        return arg
 
 
 def get_field_to_sort(args):
@@ -124,8 +126,8 @@ def get_games_info(games, id, cur, field):
     return games
 
 
-def save_playlist(playlist, games, field, output_file):
-    games = rearrange(games, field)
+def save_playlist(playlist, games, field, output_file, descending):
+    games = rearrange(games, field, descending)
     # copy the sorted games list into a new, sorted playlist
     playlist["games"] = games
     # update playlist's title
@@ -135,15 +137,18 @@ def save_playlist(playlist, games, field, output_file):
         json.dump(playlist, f, indent=4)
 
 
-def rearrange(games, field):
-    sorted_games = sort(games, field)
+def rearrange(games, field, descending):
+    sorted_games = sort(games, field, descending)
     ordered_games = update_game_order(sorted_games)
     return ordered_games
 
 
-def sort(games, field):
-    # sort list of dictionarie  s by value
-    sorted_games = sorted(games, key = lambda game: (game[field].lower()))
+def sort(games, field, descending):
+    # sort list of dictionaries by value
+    if descending:
+        sorted_games = sorted(games, key = lambda game: (game[field].lower()), reverse = True)
+    else:
+        sorted_games = sorted(games, key = lambda game: (game[field].lower()))
     # remove values, as they are no longer necessary
     for game in sorted_games:
         del game[field]
@@ -165,7 +170,6 @@ def clean(field):
         capital_letter = matches.groups(1)[0]
         field = field.replace(capital_letter, " " + capital_letter)
     field = field[0].capitalize() + field[1:]
-    print(field)
     return field 
 
 
