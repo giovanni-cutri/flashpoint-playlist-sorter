@@ -131,7 +131,7 @@ def save_playlist(playlist, games, field, output_file, descending):
     # copy the sorted games list into a new, sorted playlist
     playlist["games"] = games
     # update playlist's title
-    playlist["title"] = playlist["title"] + " - Sorted by " + clean(field)
+    playlist["title"] = playlist["title"].split(" - Sorted by")[0] + " - Sorted by " + clean(field)
     if descending:
         playlist["title"] = playlist["title"] + " (Descending)"
     # save the sorted playlist in a new file
