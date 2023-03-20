@@ -32,6 +32,7 @@ You can modify this behaviour by passing the following arguments:
 -s, --series                       sort by series
 -t, --title                        sort by title
 -desc, --descending                sort in descending order
+-r, --random                       random sort
 ```
 
 ## License
