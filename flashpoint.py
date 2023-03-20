@@ -148,14 +148,24 @@ def rearrange(games, field, descending):
 def sort(games, field, descending):
     # sort list of dictionaries by value
     if descending:
-        sorted_games = sorted(games, key=lambda game: (game[field].lower()), reverse=True)
+        sorted_games = sorted(games, key=lambda game: remove_initial_articles(game[field].lower()), reverse=True)
     else:
-        sorted_games = sorted(games, key=lambda game: (game[field].lower()))
+        sorted_games = sorted(games, key=lambda game: remove_initial_articles(game[field].lower()))
     # remove values, as they are no longer necessary
     for game in sorted_games:
         del game[field]
     return sorted_games
 
+
+def remove_initial_articles(title):
+    replacements = [
+        (r"^the ", ""),
+        (r"^a ", ""),
+        (r"^an ", "")
+    ]
+    for old, new in replacements:
+        title = re.sub(old, new, title)
+    return title
 
 def update_game_order(games):
     # update games' order in the playlist
