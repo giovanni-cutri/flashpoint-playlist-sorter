@@ -5,6 +5,8 @@
 
 ## Setting up
 
+Make sure you have Python 3 installed on your machine.
+
 - Download the *flashpoint.py* file from this repository and place it in any folder.
 - Inside that same folder, you will need to copy two files:
     - The playlist you want to sort, in JSON format (which is the default export format from the Flashpoint launcher);
