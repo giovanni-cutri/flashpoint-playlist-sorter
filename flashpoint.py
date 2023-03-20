@@ -5,6 +5,7 @@ import os
 import uuid
 import sqlite3
 import re
+import random
 
 
 def main():
@@ -14,7 +15,10 @@ def main():
     games = get_games(playlist)
     db_cursor = get_db_cursor()
     new_playlist = replace_playlist_id(playlist, db_cursor)
-    games_info = get_games_info(games, new_playlist["id"],  db_cursor, field)
+    if field != "random":
+        games_info = get_games_info(games, new_playlist["id"],  db_cursor, field)
+    else:
+        games_info = games
     # close connection to database
     con.close()
     save_playlist(new_playlist, games_info, field, args.output, args.descending)
@@ -35,6 +39,7 @@ def parse_arguments():
     group.add_argument("-pu", "--publisher", help="sort by publisher", action="store_true")
     group.add_argument("-s", "--series", help="sort by series",  action="store_true")
     group.add_argument("-t", "--title", help="sort by title", action="store_true")
+    group.add_argument("-r", "--random", help="random sort", action="store_true")
     # finally, specify if you want to sort in descending order
     parser.add_argument("-desc", "--descending", help="sort in descending order", action="store_true")
     args = parser.parse_args()
@@ -65,6 +70,8 @@ def get_field_to_sort(args):
         field = "series"
     elif args.title:
         field = "title"
+    elif args.random:
+        field = "random"
     # by default, the sorting field is "title"
     else:
         field = "title"
@@ -131,9 +138,12 @@ def save_playlist(playlist, games, field, output_file, descending):
     # copy the sorted games list into a new, sorted playlist
     playlist["games"] = games
     # update playlist's title
-    playlist["title"] = playlist["title"].split(" - Sorted by")[0] + " - Sorted by " + clean(field)
-    if descending:
-        playlist["title"] = playlist["title"] + " (Descending)"
+    if field == "random":
+        playlist["title"] = playlist["title"].split(" - Sorted by")[0] + " - Randomized"
+    else:
+        playlist["title"] = playlist["title"].split(" - Sorted by")[0] + " - Sorted by " + clean(field)
+        if descending:
+            playlist["title"] = playlist["title"] + " (Descending)"
     # save the sorted playlist in a new file
     with open(output_file, "w") as f:
         json.dump(playlist, f, indent=4)
@@ -147,14 +157,18 @@ def rearrange(games, field, descending):
 
 def sort(games, field, descending):
     # sort list of dictionaries by value
-    if descending:
-        sorted_games = sorted(games, key=lambda game: remove_initial_articles(game[field].lower()), reverse=True)
+    if field != "random":
+        if descending:
+            sorted_games = sorted(games, key=lambda game: remove_initial_articles(game[field].lower()), reverse=True)
+        else:
+            sorted_games = sorted(games, key=lambda game: remove_initial_articles(game[field].lower()))
+        # remove values, as they are no longer necessary
+        for game in sorted_games:
+            del game[field]
+        return sorted_games
     else:
-        sorted_games = sorted(games, key=lambda game: remove_initial_articles(game[field].lower()))
-    # remove values, as they are no longer necessary
-    for game in sorted_games:
-        del game[field]
-    return sorted_games
+        random.shuffle(games)
+        return games
 
 
 def remove_initial_articles(title):
@@ -177,6 +191,7 @@ def update_game_order(games):
 
 
 def clean(field):
+    # cleans field name (e.g. dateAdded becomes Date Added)
     matches = re.search("([A-Z])", field)
     if matches:
         capital_letter = matches.groups(1)[0]
