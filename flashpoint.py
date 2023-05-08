@@ -104,16 +104,8 @@ def get_db_cursor():
 
 
 def replace_playlist_id(playlist, cur):
-    # get existing playlists" id
-    res = cur.execute("SELECT id FROM playlist")
-    existing_ids = []
-    for i in res.fetchall():
-        existing_ids.append(i[0])
-    # create a new id for the new, sorted playlist, ensuring that it is not a duplicate
-    while 1:
-        id = str(uuid.uuid4())
-        if id not in existing_ids:
-            break
+    # create a new id for the new, sorted playlist
+    id = str(uuid.uuid4())
     playlist["id"] = id
     return playlist
 
