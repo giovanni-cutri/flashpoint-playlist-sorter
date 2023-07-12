@@ -35,7 +35,9 @@ def parse_arguments():
     group.add_argument("-da", "--date-added", help="sort by date added", action="store_true")
     group.add_argument("-dev", "--developer", help="sort by developer",  action="store_true")
     group.add_argument("-dm", "--date-modified", help="sort by date modified",  action="store_true")
+    group.add_argument("-lp", "--last-played", help="sort by last played",  action="store_true")
     group.add_argument("-pl", "--platform", help="sort by platform", action="store_true")
+    group.add_argument("-pt", "--playtime", help="sort by playtime",  action="store_true")
     group.add_argument("-pu", "--publisher", help="sort by publisher", action="store_true")
     group.add_argument("-s", "--series", help="sort by series",  action="store_true")
     group.add_argument("-t", "--title", help="sort by title", action="store_true")
@@ -62,8 +64,12 @@ def get_field_to_sort(args):
         field = "developer"
     elif args.date_modified:
         field = "dateModified"
+    elif args.last_played:
+        field = "lastPlayed"
     elif args.platform:
         field = "platform"
+    elif args.playtime:
+        field = "playtime"
     elif args.publisher:
         field = "publisher"
     elif args.series:
@@ -151,9 +157,9 @@ def sort(games, field, descending):
     # sort list of dictionaries by value
     if field != "random":
         if descending:
-            sorted_games = sorted(games, key=lambda game: remove_initial_articles(game[field].lower()), reverse=True)
+            sorted_games = sorted(games, key=lambda game: remove_initial_articles(game[field]), reverse=True)
         else:
-            sorted_games = sorted(games, key=lambda game: remove_initial_articles(game[field].lower()))
+            sorted_games = sorted(games, key=lambda game: remove_initial_articles(game[field]))
         # remove values, as they are no longer necessary
         for game in sorted_games:
             del game[field]
@@ -163,15 +169,18 @@ def sort(games, field, descending):
         return games
 
 
-def remove_initial_articles(title):
-    replacements = [
-        (r"^the ", ""),
-        (r"^a ", ""),
-        (r"^an ", "")
-    ]
-    for old, new in replacements:
-        title = re.sub(old, new, title)
-    return title
+def remove_initial_articles(value):
+    if not isinstance(value, int):
+        value = value.lower()
+        replacements = [
+            (r"^the ", ""),
+            (r"^a ", ""),
+            (r"^an ", "")
+        ]
+        for old, new in replacements:
+            value = re.sub(old, new, value)
+    return value
+
 
 def update_game_order(games):
     # update games' order in the playlist
