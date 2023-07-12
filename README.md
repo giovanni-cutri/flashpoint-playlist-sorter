@@ -29,7 +29,9 @@ You can modify this behaviour by passing the following arguments:
 -da, --date-added                  sort by date added
 -dev, --developer                  sort by developer
 -dm, --date-modified               sort by date modified
+-lp, --last-played                 sort by last played
 -pl, --platform                    sort by platform
+-pt, --playtime                    sort by playtime
 -pu, --publisher                   sort by publisher
 -s, --series                       sort by series
 -t, --title                        sort by title
