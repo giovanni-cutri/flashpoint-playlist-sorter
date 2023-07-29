@@ -33,6 +33,7 @@ You can modify this behaviour by passing the following arguments:
 -pl, --platform                    sort by platform
 -pt, --playtime                    sort by playtime
 -pu, --publisher                   sort by publisher
+-rd, --release-date                sort by release date
 -s, --series                       sort by series
 -t, --title                        sort by title
 -desc, --descending                sort in descending order
