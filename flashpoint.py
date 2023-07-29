@@ -67,7 +67,7 @@ def get_field_to_sort(args):
     elif args.last_played:
         field = "lastPlayed"
     elif args.platform:
-        field = "platform"
+        field = "platformName"
     elif args.playtime:
         field = "playtime"
     elif args.publisher:
