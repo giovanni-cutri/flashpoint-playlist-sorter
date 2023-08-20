@@ -16,7 +16,7 @@ def main():
     db_cursor = get_db_cursor()
     new_playlist = replace_playlist_id(playlist, db_cursor)
     if field != "random":
-        games_info = get_games_info(games, new_playlist["id"],  db_cursor, field)
+        games_info = get_games_info(games, db_cursor, field)
     else:
         games_info = games
     # close connection to database
@@ -119,10 +119,9 @@ def replace_playlist_id(playlist, cur):
     return playlist
 
 
-def get_games_info(games, id, cur, field):
+def get_games_info(games, cur, field):
     # for each game, get the value for the corresponding field of interest and add that information to the game's dictionary
     for game in games:
-        game["playlistId"] = id
         res = cur.execute("SELECT %s FROM game WHERE id = '%s' " % (field, game["gameId"]))
         try:
             value = res.fetchall()[0][0]
