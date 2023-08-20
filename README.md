@@ -1,6 +1,4 @@
-![Socialify](https://github.com/giovanni-cutri/flashpoint-playlist-sorter/blob/main/images/socialify.png)
-
-# flashpoint-playlist-sorter
+# Flashpoint Playlist Sorter
  A simple tool to sort [Flashpoint](https://bluemaxima.org/flashpoint/) playlists by the field of your choice.
 
 ## Setting up
