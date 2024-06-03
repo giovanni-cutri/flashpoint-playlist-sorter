@@ -150,7 +150,9 @@ def save_playlist(playlist, games, field, output_file, descending):
 
 
 def rearrange(games, field, descending):
+    # sort the games in the playlist
     sorted_games = sort(games, field, descending)
+    # update the games' "order" values in the playlist
     ordered_games = update_game_order(sorted_games)
     return ordered_games
 
@@ -172,6 +174,11 @@ def sort(games, field, descending):
 
 
 def remove_initial_articles(value):
+
+    # ignore leading definite and indefinite articles ("the", "a", and "an" when alphabetizing)
+    # in the regular expression, "^" ensures that they are found at the beginning of the string,
+    # while the trailing space ensures that they are not the first letters of another word (e.g. thermal)
+    
     if not isinstance(value, int):
         value = value.lower()
         replacements = [
