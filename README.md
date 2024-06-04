@@ -30,7 +30,7 @@ You can modify this behaviour by passing the following arguments:
 -lp, --last-played                 sort by last played
 -pl, --platform                    sort by platform
 -pt, --playtime                    sort by playtime
--pub, --publisher                   sort by publisher
+-pub, --publisher                  sort by publisher
 -rd, --release-date                sort by release date
 -s, --series                       sort by series
 -t, --title                        sort by title
