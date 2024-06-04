@@ -38,7 +38,7 @@ def parse_arguments():
     group.add_argument("-lp", "--last-played", help="sort by last played",  action="store_true")
     group.add_argument("-pl", "--platform", help="sort by platform", action="store_true")
     group.add_argument("-pt", "--playtime", help="sort by playtime",  action="store_true")
-    group.add_argument("-pu", "--publisher", help="sort by publisher", action="store_true")
+    group.add_argument("-pub", "--publisher", help="sort by publisher", action="store_true")
     group.add_argument("-rd", "--release-date", help="sort by release date", action="store_true")
     group.add_argument("-s", "--series", help="sort by series",  action="store_true")
     group.add_argument("-t", "--title", help="sort by title", action="store_true")
